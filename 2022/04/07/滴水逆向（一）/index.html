@@ -1,0 +1,483 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>滴水逆向（一） | 某人不会敲代码</title><meta name="keywords" content="博客,笔记,逆向"><meta name="author" content="某人不会敲代码"><meta name="copyright" content="某人不会敲代码"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="# 数据宽度与逻辑运算   数学上的数字，是没有大小限制的，可以无限的大。但在计算机中，由于受硬件的制约，数据都是有长度限制的（我们称为超过最多宽度的数据会被丢弃，也就是说存不下的超出限制的那些数据直接被抛弃了、不存了）。 # 一、数据宽度的表示   1.4 位宽度表示：假设计算机只能存储 4 位 2 进制数   存储无符号数，那么从 0 到 F，再往后还是从零开始。   存储正数和负数，那么正数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="滴水逆向（一）">
+<meta property="og:url" content="http://example.com/2022/04/07/%E6%BB%B4%E6%B0%B4%E9%80%86%E5%90%91%EF%BC%88%E4%B8%80%EF%BC%89/index.html">
+<meta property="og:site_name" content="某人不会敲代码">
+<meta property="og:description" content="# 数据宽度与逻辑运算   数学上的数字，是没有大小限制的，可以无限的大。但在计算机中，由于受硬件的制约，数据都是有长度限制的（我们称为超过最多宽度的数据会被丢弃，也就是说存不下的超出限制的那些数据直接被抛弃了、不存了）。 # 一、数据宽度的表示   1.4 位宽度表示：假设计算机只能存储 4 位 2 进制数   存储无符号数，那么从 0 到 F，再往后还是从零开始。   存储正数和负数，那么正数">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xmzbk/blog-img@main/滴水逆向.3gy8ukem0yi0.webp">
+<meta property="article:published_time" content="2022-04-07T07:41:58.000Z">
+<meta property="article:modified_time" content="2022-04-09T11:25:54.068Z">
+<meta property="article:author" content="某人不会敲代码">
+<meta property="article:tag" content="博客">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="逆向">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/xmzbk/blog-img@main/滴水逆向.3gy8ukem0yi0.webp"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/04/07/%E6%BB%B4%E6%B0%B4%E9%80%86%E5%90%91%EF%BC%88%E4%B8%80%EF%BC%89/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-right"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '滴水逆向（一）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-04-09 19:25:54'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/touxiang.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fa fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">某人不会敲代码</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fa fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">滴水逆向（一）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-04-07T07:41:58.000Z" title="发表于 2022-04-07 15:41:58">2022-04-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-04-09T11:25:54.068Z" title="更新于 2022-04-09 19:25:54">2022-04-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%80%86%E5%90%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">逆向学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="滴水逆向（一）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="数据宽度与逻辑运算"><a class="markdownIt-Anchor" href="#数据宽度与逻辑运算">#</a> 数据宽度与逻辑运算</h1>
+<p>  数学上的数字，是没有大小限制的，可以无限的大。但在计算机中，由于受硬件的制约，数据都是有长度限制的（我们称为超过最多宽度的数据会被丢弃，也就是说存不下的超出限制的那些数据直接被抛弃了、不存了）。</p>
+<h2 id="一-数据宽度的表示"><a class="markdownIt-Anchor" href="#一-数据宽度的表示">#</a> 一、数据宽度的表示</h2>
+<p>  1.4 位宽度表示：假设计算机只能存储 4 位 2 进制数<br>
+  存储无符号数，那么从 0 到 F，再往后还是从零开始。<br>
+  存储正数和负数，那么正数是 0,1,2,3,4,5,6,7（在计算机里把 0 看做正数），负数是 - 1，-2，-3，-4，-5，-6，-7，-8，对应 F,E，D，C，B，A,9,8, 并且，二进制数 1 开头的都是负数，0 开头的都是正数。<br>
+<img src="https://img-blog.csdnimg.cn/7a6a3da130044aa18779a5f8098fab7b.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGwyNjU1ODk0NTIw,size_20,color_FFFFFF,t_70,g_se,x_16" alt=""></p>
+<p>  2.8 位宽度表示：假设计算机只能存储 8 位 2 进制数<br>
+<img src="https://img-blog.csdnimg.cn/995858070d7e41bb906a8caf8da0cd3d.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGwyNjU1ODk0NTIw,size_20,color_FFFFFF,t_70,g_se,x_16" alt=""></p>
+<p>  3.16 位宽度表示：假设计算机只能存储 16 位 2 进制数<br>
+<img src="https://img-blog.csdnimg.cn/508b17abfc7543e08520e3a45006008c.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGwyNjU1ODk0NTIw,size_20,color_FFFFFF,t_70,g_se,x_16" alt=""></p>
+<p>  4.32 位宽度表示：假设计算机只能存储 32 位 2 进制数<br>
+<img src="https://img-blog.csdnimg.cn/c1cf763a4c9c4825a90b5b9552722401.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGwyNjU1ODk0NTIw,size_20,color_FFFFFF,t_70,g_se,x_16" alt=""></p>
+<p>  注：有符号、无符号什么的都是自己定义的。</p>
+<h2 id="二-几个重要的计量单位"><a class="markdownIt-Anchor" href="#二-几个重要的计量单位">#</a> 二、几个重要的计量单位</h2>
+<p>  BYTE      字节       8BIT<br>
+  WORD     字        16BIT     2 字节<br>
+  DWORD   双字     32BIT    4 字节</p>
+<h2 id="三-二进制的逻辑运算"><a class="markdownIt-Anchor" href="#三-二进制的逻辑运算">#</a> 三、二进制的逻辑运算</h2>
+<p>  1. 逻辑运算：或（or    |  ）只要有一个为 1 就是 1<br>
+<img src="https://img-blog.csdnimg.cn/fa4c890ad712426eb8f30f80d83ff1d6.png" alt=""></p>
+<p>  在这个电路图中，只要有一个开关闭上，灯泡就亮，然后就为 1，所以或运算只要有一个为 1 就是 1。<br>
+  2. 逻辑运算：与（and   &amp;  ）两个都为 1 才是 1</p>
+<p><img src="https://img-blog.csdnimg.cn/de08c7de76094741a3ab2c8cfa583484.png" alt=""><br>
+  在这个电路图中，两个开关都闭上才为 1，<br>
+  3. 逻辑运算：异或（xor   ^   ) 不一样为 1<br>
+<img src="https://img-blog.csdnimg.cn/9cb90835a6b8498fb2ae16ff93591d47.png" alt=""></p>
+<p>  4. 逻辑运算：非（not     ！ ）1 是 0    0 是 1<br>
+<img src="https://img-blog.csdnimg.cn/514f8aa407ec406293b7341457a900b7.png" alt=""></p>
+<h2 id="四-32位通用寄存器"><a class="markdownIt-Anchor" href="#四-32位通用寄存器">#</a> 四、32 位通用寄存器</h2>
+<p>  32 位意思是能存 32 个 0 或 1，这些寄存器能存 0 到 8 个 F<br>
+<img src="https://img-blog.csdnimg.cn/6de7862a41444a8ab9ae088556ab9059.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGwyNjU1ODk0NTIw,size_17,color_FFFFFF,t_70,g_se,x_16" alt=""><br>
+  学好这些内容的前提要求：要把二进制与十六进制的映射记到无比熟练的地步。</p>
+<h1 id="通用寄存器内存读写"><a class="markdownIt-Anchor" href="#通用寄存器内存读写">#</a> 通用寄存器 —— 内存读写</h1>
+<p>一、通用寄存器<br>
+<img src="https://img-blog.csdnimg.cn/086eebf3e7d140839772185aafe1193e.png" alt=""><br>
+<img src="https://img-blog.csdnimg.cn/b690fa40ba664d44ad65c77560086800.png" alt=""></p>
+<p>  32 位寄存器从中间分开，其中一半形成了 16 位寄存器，16 位寄存器前四个再从中间分开，形成 8 个 8 位的寄存器，并不是说 32 位、16 位、8 位寄存器是分开来算的，而是包含关系，我只需要 8 位，那就只用到 8 位，我需要 32 位的，那我就用到 32 位。<br>
+二、汇编代码<br>
+  所要学的内容：<br>
+  1.MOV 指令<br>
+  2.ADD 指令<br>
+  3.SUB 指令<br>
+  4.AND 指令<br>
+  5.OR 指令<br>
+  6.XOR 指令<br>
+  7.NOT 指令<br>
+  各指令所在网址：<a target="_blank" rel="noopener" href="https://www.bcdaren.com/video/videoPlay/330285640321339392">https://www.bcdaren.com/video/videoPlay/330285640321339392</a><br>
+1.MOV 指令<br>
+  操作码 目标操作数  源操作数<br>
+  MOV   EAX，OxAAAAAAAA<br>
+  MOV   AX，OxBBBB<br>
+  MOV   AH,OxCC<br>
+  MOV   AL,OxDD</p>
+<p>  MOV 的作用：拷贝源操作数到目标操作数（也就是将源操作数复制到目标操作数中）。<br>
+  （1）源操作数可以是立即数、通用寄存数、段寄存器、或者内存单元。<br>
+  （2）目标操作数可以是通用寄存器、段寄存器或者内存单元。<br>
+  （3）操作数的宽度必须一样。<br>
+  （4）源操作数和目标操作数不能同时为内存单元。<br>
+MOV 指令：<br>
+<img src="https://img-blog.csdnimg.cn/6a6bdab14d8f43298ff514d68a628f51.png" alt=""><br>
+MOV 的语法：<br>
+<img src="https://img-blog.csdnimg.cn/b92b0fe9d99f45f3bebdc74c18b0beb8.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGwyNjU1ODk0NTIw,size_11,color_FFFFFF,t_70,g_se,x_16" alt=""><br>
+三、内存读写</p>
+<p>1. 寄存器与内存的区别<br>
+  （1）寄存器位于 CPU 内部，执行速度快，但比较贵<br>
+  （2）内存速度相对较慢，但成本低，所以可以做的很大<br>
+  （3）寄存器和内存没有本质区别，都是用于存储数据的容器，都是定宽的（即都是有边界的）。<br>
+  （4）寄存器常用的有 8 个：EAX,ECX,EDX,EBX,ESP,EBP,ESI,EDI。<br>
+  （5）计算机中的几个常用计量单位：BYTE,WORD,DWORD。</p>
+<p>  BYTE      字节    =   8BIT<br>
+  WORD     字     =  16（BIT）<br>
+  DWORD   双字     32（BIT）</p>
+<p>  1KB = 1024BYTE<br>
+  1MB = 1024KB<br>
+  1GB = 1024MB</p>
+<p>  2. 内存的数量特别庞大，无法每个内存单元都起一个名字，所以用编号来代替，我们称计算机 CPU 是 32 位或者 64 位，有很多书上说之所以叫 32 位计算机是因为寄存器的宽度是 32 位，是不准确的，因为还有很多寄存器是大于 32 位的。<br>
+计算机内存的每一个字节会有一个编号（即内存编号的单位是字节），如下图：</p>
+<p>  3. 内存格式<br>
+<img src="https://img-blog.csdnimg.cn/3b742423b1f14a70ae1653ed9ea4cb28.png" alt="">  只要涉及内存读写的，一定要指定它的宽度</p>
+<p>  4. 从指定内存中写入 / 读取数据<br>
+<img src="https://img-blog.csdnimg.cn/c0a68e95d5db47878e8e1f028244fa55.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGwyNjU1ODk0NTIw,size_17,color_FFFFFF,t_70,g_se,x_16" alt=""></p>
+<h1 id="内存地址堆栈"><a class="markdownIt-Anchor" href="#内存地址堆栈">#</a> 内存地址 —— 堆栈</h1>
+<p>1. 关于 32 位、16 位、8 位通用寄存器<br>
+  这几个寄存器的关系可以说是包含的关系，32 位寄存器分为上位和下位的话，16 位寄存器就是 32 位寄存器的下位，这几个寄存器不是分开来算的，8 位寄存器发生变化，16 位、32 位寄存器也可能发生变化。</p>
+<p>2. 寄存器的结构：EAX-AX-AH-AL 的对应关系</p>
+<pre><code>这几个寄存器是包含关系
+</code></pre>
+<p>3. 为什么 8 位寄存器只能存放 2 个十六进制的数？<br>
+  因为 8 位寄存器只能存 8 位，而一位的十六进制数对应四位二进制数，所以两个 16 进制数换算成 2 进制数正好占 8 位，</p>
+<p>4. 内存单元：字节。<br>
+  每个字节有个编号，称为内存地址，一个字节等于 8 比特位，也就是一字节等于 8 位。<br>
+  每个编号对应一块内存，这个内存就是一个字节<br>
+  内存中的最小单元就是字节</p>
+<pre><code>    内存单元的换算：
+    1GB=1024MB
+    1MB=1024KB
+    1KB=1024B
+    1B（字节）=8b yte（位）
+
+    BYTE      字节    =   8BIT          一个字节
+    WORD     字     =  16（BIT）   两个字节
+    DWORD   双字     32（BIT）    四个字节
+</code></pre>
+<p>5. 数据窗口的使用、数据窗口与堆栈窗口的显示方式<br>
+反汇编窗口<br>
+  程序是怎么跑的，汇编的执行都在这个窗口<br>
+<img src="https://img-blog.csdnimg.cn/d1224f538b7b4da1b0ee1803929d7107.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5p-Q5Lq65LiN5Lya5pWy5Luj56CB,size_11,color_FFFFFF,t_70,g_se,x_16" alt=""><br>
+寄存器窗口<br>
+  8 位的、16 位的、32 位的寄存器都在这个窗口<br>
+<img src="https://img-blog.csdnimg.cn/bd5a0f8d100642a9813275904da34768.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5p-Q5Lq65LiN5Lya5pWy5Luj56CB,size_10,color_FFFFFF,t_70,g_se,x_16" alt=""> 堆栈窗口<br>
+   一个特殊的内存窗口<br>
+  这个窗口里面的编号是四个字节组成一组进行显示，四个字节换算一下就是 32 位<br>
+<img src="https://img-blog.csdnimg.cn/22a31b34f6d248c69de62f8f9c41d97f.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5p-Q5Lq65LiN5Lya5pWy5Luj56CB,size_11,color_FFFFFF,t_70,g_se,x_16" alt=""><br>
+数据窗口<br>
+  在这个窗口可以了解数据<br>
+<img src="https://img-blog.csdnimg.cn/b5851a587dc84aceb6ac74250c3297a0.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5p-Q5Lq65LiN5Lya5pWy5Luj56CB,size_12,color_FFFFFF,t_70,g_se,x_16" alt=""></p>
+<p>6. 寻址方式：<br>
+  寻址公式一：[立即数]<br>
+  读取内存的值：<br>
+  MOV EAX,DWORD  PTR  DS:[0x13FFC4]<br>
+  MOV EAX,DWORD  PTR  DS:[0x13FFC4]<br>
+  也就是将内存单元的数据给显示出来</p>
+<pre><code>    向内存中写入数据：
+    MOV DWORD PTR DS:[0x13FFC4],eax
+    MOV DWORD PTR DS:[0x13FFC4],ebx
+
+    获取内存编号：
+    LEA EAX,DWORD PTR DS:[0X13FFC4]
+    LEA EAX,DWORD PTR DS:[ESP+8]
+    和读取内存的值不一样，这个是把内存单元的编号给显示出来的指令
+</code></pre>
+<p>寻址公式二:[reg]<br>
+  注：reg 代表寄存器   可以是 8 个通用寄存器中的任意一个<br>
+  读取内存的值：<br>
+  MOV ECX,0x13FFD0<br>
+  MOV EAX,DWORD PTR DS:[ECX]<br>
+  把地址编号放到 ECX 这个寄存器里面，然后在通过这个寄存器找到内存，再放到 EAX 里面</p>
+<pre><code>    向内存中写入数据：
+    MOV EDX,0x13FFD8
+    MOV DWORD PTR DS:[EDX],0x87654321
+
+    获取内存编号：
+    LEA EAX,DWORD PTR DS:[EDX]
+    MOV EAX,DWORD PTR DS:[EDX]
+</code></pre>
+<p>寻址公式三:[reg + 立即数]<br>
+  读取内存的值:<br>
+  MOV ECX,0x13FFD0<br>
+  MOV EAX,DWORD PTR DS:[ECX+4]</p>
+<pre><code>    向内存中写入数据:
+    MOV EDX,0x13FFD8
+    MOV DWORD PTR DS:[EDX+0xC],0x87654321
+
+    获取内存编号:
+    LEA EAX,DWORD PTR DS:[EDX+4]
+    MOV EAX,DWORD PTR DS:[EDX+4]
+</code></pre>
+<p>寻址公式四:[reg+reg*{1,2,4,8}]<br>
+  读取内存的值<br>
+  MOV EAX,13FFC4<br>
+  MOV ECX,2<br>
+  MOV EDX,DWORD PTR DS:[EAX+ECX*4]<br>
+  注：1,2,4,8 是固定不变的，不要随意改</p>
+<pre><code>    向内存中写入数据:
+    MOV EAX,13FFC4
+    MOV ECX,2
+    MOV DWORD PTR DS:[EAX+ECX*4],87654321
+
+    获取内存编号:
+    LEA EAX,DWORD PTR DS:[EAX+ECX*4]
+</code></pre>
+<p>寻址公式五:[reg+reg*{1,2,4,8}+ 立即数]<br>
+  和寻址公式四同样的道理<br>
+ 7. 堆栈</p>
+<pre><code>    1.什么是堆栈
+    2.堆栈操作
+</code></pre>
+<p>思考：<br>
+  假设我们需要一块内存，有如下的要求：<br>
+  1. 主要用于临时存储一些数据，如果数量很少就放到寄存器中<br>
+  2. 能够记录存了多少数据<br>
+ 3. 能够非常快速的找到某个数据<br>
+那么堆栈的原理可以理解为：</p>
+<pre><code>    1.BASE,TOP是2个32位的通用寄存器，里面存储的是内存单元编号（内存地址）
+    2.BASE里面存储了一个地址，记录的起始地址
+    3.TOP里面也存储了一个地址，记录的是结束的地址
+    4.存入数据的时候，TOP的值减4（为方便演示，每次存取都是4个字节）
+    5.释放数据的时候，TOP的值加4（为方便演示，每次存取都是4个字节）
+    6.如果要读取中间的某个数据的时候可以通过TOP或者BASE加上偏移的方式去读取
+    7.这个内存的读取方式有个学名：堆栈
+    堆栈的优点：临时存储大量的数据，便于查找。
+</code></pre>
+<h1 id="标志寄存器"><a class="markdownIt-Anchor" href="#标志寄存器">#</a> 标志寄存器</h1>
+<p>1.push 指令：<br>
+  PUSH r32<br>
+  PUSH r16<br>
+  PUSH m16<br>
+  PUSH m32<br>
+  PUSH imm8/imm16/imm32<br>
+2.POP 指令<br>
+  把堆栈里面的值取出来放到一个容器里<br>
+  POP r16<br>
+  POP r32<br>
+  POP m16<br>
+  POP m32<br>
+  PUSHAD、POPAD 这两个指令稍作了解即可<br>
+ 3.EFLAGS 寄存器<br>
+<img src="https://img-blog.csdnimg.cn/8cf8ce13d4d84ca89fb6898eb3455455.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5p-Q5Lq65LiN5Lya5pWy5Luj56CB,size_14,color_FFFFFF,t_70,g_se,x_16" alt=""><br>
+  查看 DTDBUG 中的 EFLAGS 的值，然后转换成二进制的形式，并取出 CF/PF/AF/ZF/SF/OF 的值<br>
+记住这几个寄存器的位置和名称<br>
+  （1）进位标志 CF（Carry Flag）：如果运算结果的最高位产生了一个进位或借位，那么，其值为 1，否则其值为 0。<br>
+  MOV AL,0xEF<br>
+  MOV AL,0xFE<br>
+  ADD AL,2<br>
+  ADD AL,2<br>
+  （2）奇偶标志 PF（Parity Flag)：奇偶标志 PF 用于反映运算结果中 “1” 的个数的奇偶性。如果 “1” 的个数位偶数，则 PF 的值为 1，否则其值为 0。<br>
+  MOV AL,3<br>
+  MOV AL,3<br>
+  MOV AL,2</p>
+<p>  （3）辅助进位标志 AF（Auxiliary Carry Flag）:<br>
+ 在发生下列情况是，辅助进位标志 AF 的值被设置为 1，否则其值为 0：<br>
+  在字操作时，发生低字节向高字节进位或借位时；<br>
+  在字节操作时，发生低 4 位向高 4 位进位或借位时。<br>
+MOV EAX,0x55EEFFFF    MOV AX,5EFE    MOV AL,4E<br>
+ADD EAX,2         ADD AX,2      ADD AL,2</p>
+<p>  （4）零标志 ZF（Zero Flag），零标志 ZF 用来反映运算是否为 0。如果运算结果为 0，则其值为 1，否则为 0。在判断运算结果是否为 0 时，可使用此标志位。<br>
+  XOR EAX,EAX<br>
+  MOV EAX,2<br>
+  SUB EAX,2<br>
+  （5）符号标志 SF（Sign Flag）：符号标志 SF 用来反映运算结果的符号位，它与运算结果的最高位相同。<br>
+  MOV AL,7F<br>
+  ADD AL,2</p>
+<p>  （6）溢出标志 OF（Overflow Flag）：溢出标志 OF 用于反映有符号数加减运算所的结果是否溢出。如果运算结果超过当前运算位数所能表示的范围，则成为溢出，OF 的值被置为 1，否则，OF 的值被清为 0</p>
+<p>4.ADC 指令：带进位加法<br>
+  格式：ADC  R/M,R/M/IMM   两边不能同时为内存   宽度要一样<br>
+  ADC AL,CL<br>
+  ADC BYTE PTR DS:[12FFC4],2<br>
+  ADC BYTE PTR DS:[12FFC4],AL</p>
+<p>SBB 指令：带借位减法<br>
+  格式：SBB  R/M,R/M  两边不能同时为内存  宽度要一样<br>
+  SBB AL,CL<br>
+  SBB BYTE PTR DS:[12FFC4],2<br>
+  SBB BYTE PTR DS:[12FFC4],AL</p>
+<p>XCHG 指令：交换数据<br>
+  格式：XCGH  R/M,R/M   两边不能同时为内存，宽度要一样<br>
+  XCGH AL,CL<br>
+  XCGH DWORD PTR DS:[12FFC4],EAX<br>
+  XCGH BYTE PTR DS:[12FFC4],AL</p>
+<p>MOVS 指令：移动数据  内存 - 内存<br>
+  BYTE/WORD/DWORD<br>
+  MOVS BYTE PTR ES:[EDI],BYTE PTR DS:[ESI]  简写为：MOVSB<br>
+  MOVS WORD PTR ES:[EDI],BYTE PTR DS:[ESI]  简写为：MOVSW<br>
+  MOVS DWORD PTR ES:[EDI],BYTE PTR DS:[ESI] 简写为：MOVSD</p>
+<p>5.STOS 指令：将 AI/AX/EAX 的值存储到 [EDI] 指定的内存单元<br>
+  STOS BYTE PTR ES:[EDI]   简写为 STOSB<br>
+  STOS WORD PTR ES:[EDI]   简写为 STOSW<br>
+  STOS DWORD PTR ES:[EDI]   简写为 STOSD</p>
+<p>6.REP 指令：按计数寄存器（ECX）中指定的次数重复执行字符串指令<br>
+  MOV ECX,10<br>
+  REP MOVSD<br>
+  REP STOSD</p>
+<p>本文图片取自我自己的 CSDN 博客的文章。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">某人不会敲代码</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/04/07/%E6%BB%B4%E6%B0%B4%E9%80%86%E5%90%91%EF%BC%88%E4%B8%80%EF%BC%89/">http://example.com/2022/04/07/%E6%BB%B4%E6%B0%B4%E9%80%86%E5%90%91%EF%BC%88%E4%B8%80%EF%BC%89/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">某人不会敲代码</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8D%9A%E5%AE%A2/">博客</a><a class="post-meta__tags" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><a class="post-meta__tags" href="/tags/%E9%80%86%E5%90%91/">逆向</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/xmzbk/blog-img@main/滴水逆向.3gy8ukem0yi0.webp" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/gh/overtrue/share.js@master/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2022/04/05/csapp%20datelab%E8%AF%A6%E8%A7%A3/"><img class="prev-cover" src="https://cdn.jsdelivr.net/gh/xmzbk/blog-img@main/你豆子.1kteq2ci816o.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">csapp datelab详解</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/04/05/csapp%20datelab%E8%AF%A6%E8%A7%A3/" title="csapp datelab详解"><img class="cover" src="https://cdn.jsdelivr.net/gh/xmzbk/blog-img@main/你豆子.1kteq2ci816o.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-05</div><div class="title">csapp datelab详解</div></div></a></div><div><a href="/2022/02/23/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80-%E8%8F%9C%E9%B8%9F%E7%9A%84%E5%85%A5%E9%97%A8%E4%B9%8B%E8%B7%AF/" title="汇编基础-菜鸟的入门之路"><img class="cover" src="https://tse1-mm.cn.bing.net/th/id/R-C.230a623847f28107cfdf1ebe00273401?rik=j7VTRBuqxgmdUQ&riu=http%3a%2f%2fwww.runoob.com%2fwp-content%2fuploads%2f2019%2f01%2fmjs.jpeg&ehk=Jy4Vh1ORTxL%2bURl7yaqwCzV1xQp7Sa%2bsAECQHoafgvY%3d&risl=&pid=ImgRaw&r=0" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-23</div><div class="title">汇编基础-菜鸟的入门之路</div></div></a></div><div><a href="/2022/02/18/%E6%B5%85%E8%B0%88%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" title="浅谈博客搭建"><img class="cover" src="/img/zi.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-18</div><div class="title">浅谈博客搭建</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Valine</span><span class="switch-btn"></span><span class="second-comment">Disqus</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div><div><div id="disqus_thread"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/touxiang.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">某人不会敲代码</div><div class="author-info__description">这里只有一个孤独的程序员</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xmzbk"><i class="fab fa-github"></i><span>こっちに来い</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%AE%BD%E5%BA%A6%E4%B8%8E%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97"><span class="toc-number">1.</span> <span class="toc-text"> 数据宽度与逻辑运算</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E6%95%B0%E6%8D%AE%E5%AE%BD%E5%BA%A6%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、数据宽度的表示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E5%87%A0%E4%B8%AA%E9%87%8D%E8%A6%81%E7%9A%84%E8%AE%A1%E9%87%8F%E5%8D%95%E4%BD%8D"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、几个重要的计量单位</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%9A%84%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、二进制的逻辑运算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-32%E4%BD%8D%E9%80%9A%E7%94%A8%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">1.4.</span> <span class="toc-text"> 四、32 位通用寄存器</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%9A%E7%94%A8%E5%AF%84%E5%AD%98%E5%99%A8%E5%86%85%E5%AD%98%E8%AF%BB%E5%86%99"><span class="toc-number">2.</span> <span class="toc-text"> 通用寄存器 —— 内存读写</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80%E5%A0%86%E6%A0%88"><span class="toc-number">3.</span> <span class="toc-text"> 内存地址 —— 堆栈</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A0%87%E5%BF%97%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">4.</span> <span class="toc-text"> 标志寄存器</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/04/07/%E6%BB%B4%E6%B0%B4%E9%80%86%E5%90%91%EF%BC%88%E4%B8%80%EF%BC%89/" title="滴水逆向（一）"><img src="https://cdn.jsdelivr.net/gh/xmzbk/blog-img@main/滴水逆向.3gy8ukem0yi0.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="滴水逆向（一）"/></a><div class="content"><a class="title" href="/2022/04/07/%E6%BB%B4%E6%B0%B4%E9%80%86%E5%90%91%EF%BC%88%E4%B8%80%EF%BC%89/" title="滴水逆向（一）">滴水逆向（一）</a><time datetime="2022-04-07T07:41:58.000Z" title="发表于 2022-04-07 15:41:58">2022-04-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/04/05/csapp%20datelab%E8%AF%A6%E8%A7%A3/" title="csapp datelab详解"><img src="https://cdn.jsdelivr.net/gh/xmzbk/blog-img@main/你豆子.1kteq2ci816o.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="csapp datelab详解"/></a><div class="content"><a class="title" href="/2022/04/05/csapp%20datelab%E8%AF%A6%E8%A7%A3/" title="csapp datelab详解">csapp datelab详解</a><time datetime="2022-04-05T12:31:58.000Z" title="发表于 2022-04-05 20:31:58">2022-04-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/23/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80-%E8%8F%9C%E9%B8%9F%E7%9A%84%E5%85%A5%E9%97%A8%E4%B9%8B%E8%B7%AF/" title="汇编基础-菜鸟的入门之路"><img src="https://tse1-mm.cn.bing.net/th/id/R-C.230a623847f28107cfdf1ebe00273401?rik=j7VTRBuqxgmdUQ&amp;riu=http%3a%2f%2fwww.runoob.com%2fwp-content%2fuploads%2f2019%2f01%2fmjs.jpeg&amp;ehk=Jy4Vh1ORTxL%2bURl7yaqwCzV1xQp7Sa%2bsAECQHoafgvY%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="汇编基础-菜鸟的入门之路"/></a><div class="content"><a class="title" href="/2022/02/23/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80-%E8%8F%9C%E9%B8%9F%E7%9A%84%E5%85%A5%E9%97%A8%E4%B9%8B%E8%B7%AF/" title="汇编基础-菜鸟的入门之路">汇编基础-菜鸟的入门之路</a><time datetime="2022-02-23T14:29:22.000Z" title="发表于 2022-02-23 22:29:22">2022-02-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/18/%E6%B5%85%E8%B0%88%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" title="浅谈博客搭建"><img src="/img/zi.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="浅谈博客搭建"/></a><div class="content"><a class="title" href="/2022/02/18/%E6%B5%85%E8%B0%88%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" title="浅谈博客搭建">浅谈博客搭建</a><time datetime="2022-02-18T12:16:34.000Z" title="发表于 2022-02-18 20:16:34">2022-02-18</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://cdn.jsdelivr.net/gh/xmzbk/blog-img@main/footer.5elqa9cxp4o0.webp')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 某人不会敲代码</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: '',
+      appKey: '',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script>function loadDisqus () {
+  var disqus_config = function () {
+    this.page.url = 'http://example.com/2022/04/07/%E6%BB%B4%E6%B0%B4%E9%80%86%E5%90%91%EF%BC%88%E4%B8%80%EF%BC%89/'
+    this.page.identifier = '2022/04/07/滴水逆向（一）/'
+    this.page.title = '滴水逆向（一）'
+  };
+
+  window.disqusReset = () => {
+    DISQUS.reset({
+      reload: true,
+      config: disqus_config
+    })
+  }
+
+  if (window.DISQUS) disqusReset()
+  else {
+    (function() { 
+      var d = document, s = d.createElement('script');
+      s.src = 'https://.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  }
+}
+
+if ('Valine' === 'Disqus' || !true) {
+  if (true) btf.loadComment(document.getElementById('disqus_thread'), loadDisqus)
+  else loadDisqus()
+} else {
+  function loadOtherComment () {
+    loadDisqus()
+  }
+}
+</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
