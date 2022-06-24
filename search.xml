@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>腾讯云+PicGo搭建图床</title>
+      <link href="/2022/06/24/%E8%85%BE%E8%AE%AF%E4%BA%91-PicGo%E6%90%AD%E5%BB%BA%E5%9B%BE%E5%BA%8A/"/>
+      <url>/2022/06/24/%E8%85%BE%E8%AE%AF%E4%BA%91-PicGo%E6%90%AD%E5%BB%BA%E5%9B%BE%E5%BA%8A/</url>
+      
+        <content type="html"><![CDATA[<p> 前段时间 github 博客崩了好长时间，好在后来又恢复了，但是我搭建的图床彻底崩了，图片上传不上，因为是用 github+picx 搭建的图床，不稳定也是在意料之内，索性用腾讯云更安稳一些。</p><h1 id="1腾讯云创建存储桶"><a class="markdownIt-Anchor" href="#1腾讯云创建存储桶">#</a> 1. 腾讯云创建存储桶</h1><p> 先注册个账号，然后在云产品中找到它的对象存储服务。<br><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220624173311.png" alt=""><br> 云产品在页面左上，进入对象存储。<br><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220624173620.png" alt=""><br> 点击创建存储桶<br><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220624173831.png" alt=""><br> 输入名称，不做啥要求，只不过这个是你的域名的一部分。访问权限一定要选公有读私有写，否则你上传的图片无法使用。默认警告可以打开，内容安全闭掉，然后下一步。<br><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220624174051.png" alt=""><br> 直接下一步即可。确认配置也是直接过就行。</p><h1 id="2设置密钥"><a class="markdownIt-Anchor" href="#2设置密钥">#</a> 2. 设置密钥</h1><p><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220624180103.png" alt=""><br> 密钥管理 -&gt; 访问密钥<br><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220624180245.png" alt=""><br> API 密钥管理 -&gt; 新建密钥</p><h1 id="3下载picgo"><a class="markdownIt-Anchor" href="#3下载picgo">#</a> 3. 下载 PicGo</h1><p>下载 PicGo 地址：</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://github.com/Molunerfinn/PicGo/releases</span><br></pre></td></tr></table></figure><p> 建议挂一个代理，或者网上找网盘资源，现在 github 下个东西真是太难了。<br> 下载好之后打开。<br><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220624175241.png" alt=""><br> 在图床设置 -&gt; 腾讯云 COS 中，先设置前三个选项，前三个选项其实就是你设置的密钥了，除此之外 COS 版本选 v5。<br><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220624180601.png" alt=""></p><p> 接着设置存储空间名、存储区域、自定义域名。<br><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220624180939.png" alt=""><br> 存储桶列表 -&gt; 点击存储桶名称 -&gt; 概览，就能找到上图这个界面，然后根据信息完善你的设置，注意存储区域写的是你的所属地域后面括号里的内容。都设置好之后保存，然后开始测试能否上传图片。<br><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220624181444.png" alt=""><br> 上传区上传一张图片，然后在相册中查看你上传的图片。可以复制一下网址在浏览器打开，能打开说明你的图床已经配置好了。</p><h1 id="4壁纸"><a class="markdownIt-Anchor" href="#4壁纸">#</a> 4. 壁纸</h1><p> 最后推荐一个肥肠好用的壁纸网站：</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wall.alphacoders.com</span><br></pre></td></tr></table></figure><p> 不管是写博客用，还是主题用，或者电脑用，都力荐！</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 图床搭建 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 博客 </tag>
+            
+            <tag> 笔记 </tag>
+            
+            <tag> 图床 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>reverse的wp</title>
       <link href="/2022/06/18/reverse%E7%9A%84wp/"/>
       <url>/2022/06/18/reverse%E7%9A%84wp/</url>
