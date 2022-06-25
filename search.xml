@@ -33,6 +33,35 @@
     
     
     <entry>
+      <title>滴水逆向：C语言（一）</title>
+      <link href="/2022/06/24/%E6%BB%B4%E6%B0%B4%E9%80%86%E5%90%91%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9AC%E8%AF%AD%E8%A8%80/"/>
+      <url>/2022/06/24/%E6%BB%B4%E6%B0%B4%E9%80%86%E5%90%91%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9AC%E8%AF%AD%E8%A8%80/</url>
+      
+        <content type="html"><![CDATA[<h2 id="1c语言函数调用的基本流程"><a class="markdownIt-Anchor" href="#1c语言函数调用的基本流程">#</a> 1.c 语言函数调用的基本流程</h2><p><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/image-20220624090352079.png" alt=""><br> 在程序调用时，大致是按照这样的流程进行的，开栈也就是保存栈底，为缓冲区填充过数据之后，就开始进行我们函数所要干的事情，函数做的事情结束后，需要恢复现场，和开栈的顺序是相反的，然后降低堆栈，最后返回，一般返回之后会进行平栈，有的是外平栈，有的是内平栈。</p><h2 id="2c语言是怎样变成汇编的"><a class="markdownIt-Anchor" href="#2c语言是怎样变成汇编的">#</a> 2.c 语言是怎样变成汇编的？</h2><p>（1) 裸函数</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void __declspec(naked) Function()</span><br><span class="line">&#123;...&#125;</span><br><span class="line"></span><br><span class="line">void __declspec(naked) Function()  </span><br><span class="line">&#123;</span><br><span class="line">__asm ret</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p> 和正常的函数不同，裸函数生成汇编时啥也没有，所以要你自己添东西，正常函数还会生成一堆东西，防止出错。裸函数要自己添加一个 ret 返回，否则会报错。<br>（2) 调用约定</p><table><thead><tr><th>调用约定</th><th>参数压栈顺序</th><th>平衡堆栈</th></tr></thead><tbody><tr><td>__cdecl</td><td>从右至左入栈</td><td>调用者清理栈</td></tr><tr><td>__stdcall</td><td>从右至左入栈</td><td>自身清理堆栈</td></tr><tr><td>__fastcall</td><td>ECX/EDX 传送前两个剩下：从右至左入栈</td><td>自身清理堆栈</td></tr></tbody></table><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">eg:void __cdecl sum&#123;...&#125;</span><br></pre></td></tr></table></figure><p> 从右至左入栈就是设定的参数从右边往左边依次压栈，调用者清理堆栈就是外平栈，自身清理堆栈就是内平栈，__ fastcall 设定不多于两个参数时，用寄存器传参，这样比用内存传参更快，当设定参数过多时，多出的参数依然用内存传，也就是 PUSH，但是这样的话，快速传参的意义就消失了，所以使用__fastcall 时一般不设置那么多参数。</p><h2 id="3c语言中的数据类型"><a class="markdownIt-Anchor" href="#3c语言中的数据类型">#</a> 3.c 语言中的数据类型</h2><p>（1）数据类型<br> 基本类型：整数类型、浮点类型。<br> 构造类型：数组、结构体、共用体。<br> 指针类型。<br> 空类型。<br>（2）学习数据类型的要素<br> 存储数据的宽度<br> 存储数据的格式<br> 作用范围 (作用域)<br>（3）整数类型：char    short    int    long</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">char    8BIT   1字节</span><br><span class="line">short   16BIT  2字节</span><br><span class="line">int     32BIT  4字节</span><br><span class="line">long    32BIT  4字节</span><br></pre></td></tr></table></figure><p>（4）有无符号数<br> 默认的数据类型都是有符号数，如果定义无符号数需要在开头加上 unsigned，计算机对于有无符号数的存储都是相同的。<br>（5）浮点类型<br> float 和 double 在存储方式上都是遵从 IEEE 的规范的。<br><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220625215456.png" alt=""><br><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220625215548.png" alt=""></p><p>将一个 float 型转化为内存存储格式的步骤为：<br> a. 先将这个实数的绝对值化为二进制格式<br> b. 将这个二进制格式实数的小数点左移或右移 n 位，直到小数点移动到第一个有效数字的右边。<br> c. 从小数点右边第一位开始数出二十三位数字放入第 22 到第 0 位。<br> d. 如果实数是正的，则在第 31 位放入 “0”，否则放入 “1”。<br> e. 如果 n 是左移得到的，说明指数是正的，第 30 位放入 “1”。如果 n 是右移得到的或 n=0，则第 30 位放入 “0”。<br> f. 如果 n 是左移得到的，则将 n 减去 1 后化为二进制，并在左边加 “0” 补足七位，放入第 29 到第 23 位。如果 n 是右移得到的或 n=0，则将 n 化为二进制后在左边加 “0” 补足七位，再各位求反，再放入第 29 到第 23 位。<br><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220626001447.png" alt=""></p><h2 id="4程序的真正入口"><a class="markdownIt-Anchor" href="#4程序的真正入口">#</a> 4. 程序的真正入口</h2><p>（1） main 或 WinMain  是 “语法规定的用户入口”，而不是 “应用程序入口”。应用程序入口通常是启动函数。<br>（2） mainCRTStartup 和  wmainCRTStartup 是控制台环境下多字节编码和 Unicode 编码的启动函数。而 WinMainCRTStartup  和 wWinMainCRTStartup 是 windows 环境下多字节编码和 Unicode 编码的启动函数.<br>（3）main 函数的识别:<br>main  函数被调用前要先调用的函数如下：</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GetVersion() </span><br><span class="line">_heap_init() </span><br><span class="line">GetCommandLineA() </span><br><span class="line">_crtGetEnvironmentStringsA() </span><br><span class="line">_setargv()</span><br><span class="line">_setenvp()</span><br><span class="line">_cinit()</span><br></pre></td></tr></table></figure><p> 这些函数调用结束后就会调用 main 函数。根据 main 调用参数的特征就可以找到函数的入口。</p><h2 id="5ascii编码和中文编码"><a class="markdownIt-Anchor" href="#5ascii编码和中文编码">#</a> 5.ASCII 编码和中文编码</h2><p>（1）ASCII 编码：<br> a.ASCII 码使用指定的 7 位或  8 位二进制数组合来表示 128 或 256 种可能的字符。<br> b. 标准 ASCII 码使用 7  位二进制数来表示所有的大写和小写字母，数字 0 到 9、标点符号，以及在美式英语中使用的特殊控制字符。<br> c. 扩展 ASCII  码允许将每个字符的第 8 位用于确定附加的 128 个特殊符号字符、外来语字母和图形符号。<br> 一般我们使用的都是标准的 ASCII 编码表，因为已经够用了。<br>（2）GB2312 和 GB2312-80<br> 这些编码设计视为了能够显示中文，用于将汉字转为计算机可以接受的数字系统的数。<br><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220625235637.png" alt=""><br> 从图中可以看出一个汉字用两个 ASCII 码表示，这样可以将所表示的量大大增加，可以组合大约 7000 多个汉字。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 逆向学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 博客 </tag>
+            
+            <tag> 笔记 </tag>
+            
+            <tag> 逆向 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>腾讯云+PicGo搭建图床</title>
       <link href="/2022/06/24/%E8%85%BE%E8%AE%AF%E4%BA%91-PicGo%E6%90%AD%E5%BB%BA%E5%9B%BE%E5%BA%8A/"/>
       <url>/2022/06/24/%E8%85%BE%E8%AE%AF%E4%BA%91-PicGo%E6%90%AD%E5%BB%BA%E5%9B%BE%E5%BA%8A/</url>
