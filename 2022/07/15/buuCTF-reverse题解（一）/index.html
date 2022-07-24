@@ -1,0 +1,380 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>buuCTF-Reverse题解（一） | 某人不会敲代码</title><meta name="keywords" content="博客,笔记,writeup"><meta name="author" content="某人不会敲代码"><meta name="copyright" content="某人不会敲代码"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="# Java 逆向解密  这道题算是 java 逆向的入门题了吧，确实很简单，但是我 java 没有好好学，泪目啊，不管学什么都要好好学啊，总会有用的。  首先是用 jd-gui（java 反编译工具）将得到的 class 文件反编译。 import java.util.ArrayList;import java.util.Scanner;public class Reverse &amp;#123;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="buuCTF-Reverse题解（一）">
+<meta property="og:url" content="http://example.com/2022/07/15/buuCTF-reverse%E9%A2%98%E8%A7%A3%EF%BC%88%E4%B8%80%EF%BC%89/index.html">
+<meta property="og:site_name" content="某人不会敲代码">
+<meta property="og:description" content="# Java 逆向解密  这道题算是 java 逆向的入门题了吧，确实很简单，但是我 java 没有好好学，泪目啊，不管学什么都要好好学啊，总会有用的。  首先是用 jd-gui（java 反编译工具）将得到的 class 文件反编译。 import java.util.ArrayList;import java.util.Scanner;public class Reverse &amp;#123;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/632918.jpg">
+<meta property="article:published_time" content="2022-07-15T07:57:22.000Z">
+<meta property="article:modified_time" content="2022-07-24T09:18:31.983Z">
+<meta property="article:author" content="某人不会敲代码">
+<meta property="article:tag" content="博客">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="writeup">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/632918.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/07/15/buuCTF-reverse%E9%A2%98%E8%A7%A3%EF%BC%88%E4%B8%80%EF%BC%89/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-right"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'buuCTF-Reverse题解（一）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-07-24 17:18:31'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/touxiang.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">12</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 嘿咻</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 阴乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fa fa-video"></i><span> 片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/632918.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">某人不会敲代码</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 嘿咻</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 阴乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fa fa-video"></i><span> 片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">buuCTF-Reverse题解（一）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-07-15T07:57:22.000Z" title="发表于 2022-07-15 15:57:22">2022-07-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-07-24T09:18:31.983Z" title="更新于 2022-07-24 17:18:31">2022-07-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Reverse/">Reverse</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>13分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="buuCTF-Reverse题解（一）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="java逆向解密"><a class="markdownIt-Anchor" href="#java逆向解密">#</a> Java 逆向解密</h3>
+<p> 这道题算是 java 逆向的入门题了吧，确实很简单，但是我 java 没有好好学，泪目啊，不管学什么都要好好学啊，总会有用的。<br>
+ 首先是用 jd-gui（java 反编译工具）将得到的 class 文件反编译。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Reverse</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    Scanner s = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">    System.out.println(<span class="string">&quot;Please input the flag );</span></span><br><span class="line"><span class="string">    String str = s.next();               //输入字符串</span></span><br><span class="line"><span class="string">    System.out.println(&quot;</span>Your input is );</span><br><span class="line">    System.out.println(str);</span><br><span class="line">    <span class="keyword">char</span>[] stringArr = str.toCharArray();</span><br><span class="line">    Encrypt(stringArr);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Encrypt</span><span class="params">(<span class="keyword">char</span>[] arr)</span> </span>&#123;</span><br><span class="line">    ArrayList&lt;Integer&gt; Resultlist = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">      <span class="keyword">int</span> result = arr[i] + <span class="number">64</span> ^ <span class="number">0x20</span>;</span><br><span class="line">      Resultlist.add(Integer.valueOf(result));</span><br><span class="line">    &#125;            <span class="comment">//此处是将输入的字符串加64，再与0x20异或</span></span><br><span class="line">    <span class="keyword">int</span>[] KEY = &#123; </span><br><span class="line">        <span class="number">180</span>, <span class="number">136</span>, <span class="number">137</span>, <span class="number">147</span>, <span class="number">191</span>, <span class="number">137</span>, <span class="number">147</span>, <span class="number">191</span>, <span class="number">148</span>, <span class="number">136</span>, </span><br><span class="line">        <span class="number">133</span>, <span class="number">191</span>, <span class="number">134</span>, <span class="number">140</span>, <span class="number">129</span>, <span class="number">135</span>, <span class="number">191</span>, <span class="number">65</span> &#125;;</span><br><span class="line">    ArrayList&lt;Integer&gt; KEYList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; KEY.length; j++)</span><br><span class="line">      KEYList.add(Integer.valueOf(KEY[j])); </span><br><span class="line">    System.out.println(<span class="string">&quot;Result:&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (Resultlist.equals(KEYList)) &#123;  </span><br><span class="line">      System.out.println(<span class="string">&quot;Congratulations);</span></span><br><span class="line"><span class="string">    &#125; else &#123;</span></span><br><span class="line"><span class="string">      System.err.println(&quot;</span>Error);</span><br><span class="line">    &#125;    <span class="comment">//将result也就是我们输入的字符串助理后的结果与KEY进行比较</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 代码的大致 意思是，输入一段字符串，进行运算：+64  ^ 20。然后与 KEY 进行比较，相同就输出正确。<br>
+ 所以我们可以写个 python 脚本将代码的过程逆一下。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">arr = [<span class="number">180</span>,<span class="number">136</span>,<span class="number">137</span>,<span class="number">147</span>,<span class="number">191</span>,<span class="number">137</span>,<span class="number">147</span>,<span class="number">191</span>,<span class="number">148</span>,<span class="number">136</span>,<span class="number">133</span>,<span class="number">191</span>,<span class="number">134</span>,<span class="number">140</span>,<span class="number">129</span>,<span class="number">135</span>,<span class="number">191</span>,<span class="number">65</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;flag&#123;&quot;</span>,end = <span class="string">&quot;&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">18</span>):</span><br><span class="line">    arr[i] = (arr[i] ^<span class="number">32</span>) -<span class="number">64</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">chr</span>(arr[i]),end = <span class="string">&quot;&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;&#125;&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220715162817.png" alt=""></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flag&#123;This_is_the_flag_!&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="刮开有奖"><a class="markdownIt-Anchor" href="#刮开有奖">#</a> 刮开有奖</h3>
+<p> 这道题拿到一个可执行程序。但是加载过后点击没有任何反应。所以直接拖到 IDA 中分析伪代码。<br>
+<img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220722152159.png" alt=""></p>
+<p> 代码分析还是有一定难度的，我也是看了很长时间，结果分析错了，于是借鉴了别人写的题解，实在是我技不如人，慢慢努力吧。<br>
+<img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220722152711.png" alt=""><br>
+ 首先是找到主函数，对于这种有窗口的程序的题我还是第二次接触，上一次接触还是在上一次，所以这一次写一写加深印象。<br>
+ 如图，Winmain 函数的功能是被系统调用，作为一个 32 位程序的入口点，能够初始化应用程序，显示主窗口。<br>
+ 随后是 DialogFunc 就是程序的主要伪代码所在了。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">INT_PTR __stdcall <span class="title">DialogFunc</span><span class="params">(HWND hDlg, UINT a2, WPARAM a3, LPARAM a4)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span> *v4; <span class="comment">// esi</span></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span> *v5; <span class="comment">// edi</span></span><br><span class="line">  <span class="keyword">int</span> v7[<span class="number">2</span>]; <span class="comment">// [esp+8h] [ebp-20030h] BYREF</span></span><br><span class="line">  <span class="keyword">int</span> v8; <span class="comment">// [esp+10h] [ebp-20028h]</span></span><br><span class="line">  <span class="keyword">int</span> v9; <span class="comment">// [esp+14h] [ebp-20024h]</span></span><br><span class="line">  <span class="keyword">int</span> v10; <span class="comment">// [esp+18h] [ebp-20020h]</span></span><br><span class="line">  <span class="keyword">int</span> v11; <span class="comment">// [esp+1Ch] [ebp-2001Ch]</span></span><br><span class="line">  <span class="keyword">int</span> v12; <span class="comment">// [esp+20h] [ebp-20018h]</span></span><br><span class="line">  <span class="keyword">int</span> v13; <span class="comment">// [esp+24h] [ebp-20014h]</span></span><br><span class="line">  <span class="keyword">int</span> v14; <span class="comment">// [esp+28h] [ebp-20010h]</span></span><br><span class="line">  <span class="keyword">int</span> v15; <span class="comment">// [esp+2Ch] [ebp-2000Ch]</span></span><br><span class="line">  <span class="keyword">int</span> v16; <span class="comment">// [esp+30h] [ebp-20008h]</span></span><br><span class="line">  CHAR String[<span class="number">65536</span>]; <span class="comment">// [esp+34h] [ebp-20004h] BYREF</span></span><br><span class="line">  <span class="keyword">char</span> v18[<span class="number">65536</span>]; <span class="comment">// [esp+10034h] [ebp-10004h] BYREF</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> ( a2 == <span class="number">272</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">if</span> ( a2 != <span class="number">273</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span> ( (_WORD)a3 == <span class="number">1001</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">memset</span>(String, <span class="number">0</span>, <span class="number">0xFFFF</span>u);</span><br><span class="line">    GetDlgItemTextA(hDlg, <span class="number">1000</span>, String, <span class="number">0xFFFF</span>);</span><br><span class="line">      <span class="comment">//该函数的作用是获得与对话框中的控件相关的标题和文本</span></span><br><span class="line">    <span class="keyword">if</span> ( <span class="built_in">strlen</span>(String) == <span class="number">8</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      v7[<span class="number">0</span>] = <span class="number">90</span>;</span><br><span class="line">      v7[<span class="number">1</span>] = <span class="number">74</span>;</span><br><span class="line">      v8 = <span class="number">83</span>;</span><br><span class="line">      v9 = <span class="number">69</span>;</span><br><span class="line">      v10 = <span class="number">67</span>;</span><br><span class="line">      v11 = <span class="number">97</span>;</span><br><span class="line">      v12 = <span class="number">78</span>;</span><br><span class="line">      v13 = <span class="number">72</span>;</span><br><span class="line">      v14 = <span class="number">51</span>;</span><br><span class="line">      v15 = <span class="number">110</span>;</span><br><span class="line">      v16 = <span class="number">103</span>;   <span class="comment">//可以归为一个数组也就是v7</span></span><br><span class="line">      sub_4010F0(v7, <span class="number">0</span>, <span class="number">10</span>);<span class="comment">//这里将v7数组从小到大排序</span></span><br><span class="line">      <span class="built_in">memset</span>(v18, <span class="number">0</span>, <span class="number">0xFFFF</span>u);</span><br><span class="line">      v18[<span class="number">0</span>] = String[<span class="number">5</span>];</span><br><span class="line">      v18[<span class="number">2</span>] = String[<span class="number">7</span>];</span><br><span class="line">      v18[<span class="number">1</span>] = String[<span class="number">6</span>];</span><br><span class="line">      v4 = (<span class="keyword">const</span> <span class="keyword">char</span> *)sub_401000(v18, <span class="built_in">strlen</span>(v18));</span><br><span class="line">      <span class="built_in">memset</span>(v18, <span class="number">0</span>, <span class="number">0xFFFF</span>u);</span><br><span class="line">      v18[<span class="number">1</span>] = String[<span class="number">3</span>];</span><br><span class="line">      v18[<span class="number">0</span>] = String[<span class="number">2</span>];</span><br><span class="line">      v18[<span class="number">2</span>] = String[<span class="number">4</span>];</span><br><span class="line">      v5 = (<span class="keyword">const</span> <span class="keyword">char</span> *)sub_401000(v18, <span class="built_in">strlen</span>(v18));</span><br><span class="line">      <span class="keyword">if</span> ( String[<span class="number">0</span>] == v7[<span class="number">0</span>] + <span class="number">34</span></span><br><span class="line">        &amp;&amp; String[<span class="number">1</span>] == v10</span><br><span class="line">        &amp;&amp; <span class="number">4</span> * String[<span class="number">2</span>] - <span class="number">141</span> == <span class="number">3</span> * v8</span><br><span class="line">        &amp;&amp; String[<span class="number">3</span>] / <span class="number">4</span> == <span class="number">2</span> * (v13 / <span class="number">9</span>)</span><br><span class="line">        &amp;&amp; !<span class="built_in">strcmp</span>(v4, <span class="string">&quot;ak1w&quot;</span>)</span><br><span class="line">        &amp;&amp; !<span class="built_in">strcmp</span>(v5, <span class="string">&quot;V1Ax&quot;</span>) )</span><br><span class="line">      &#123;</span><br><span class="line">        MessageBoxA(hDlg, <span class="string">&quot;U g3t 1T!&quot;</span>, <span class="string">&quot;@_@&quot;</span>, <span class="number">0</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> ( (_WORD)a3 != <span class="number">1</span> &amp;&amp; (_WORD)a3 != <span class="number">2</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  EndDialog(hDlg, (<span class="keyword">unsigned</span> __int16)a3);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 代码的大致意思为 String 中的字符串就是我们需要的 flag。通过分析代码我们能够求出 String 中的字符串，所以也不用写脚本去逆。<br>
+ 关键的部分其实只有两个：（1）排序；（2）base64 解码。<br>
+ sub_4010F0 (v7, 0, 10); 函数的作用是排序，将 v7 进行排序。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> __cdecl <span class="title">sub_4010F0</span><span class="params">(<span class="keyword">int</span> a1, <span class="keyword">int</span> a2, <span class="keyword">int</span> a3)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> result; <span class="comment">// eax</span></span><br><span class="line">  <span class="keyword">int</span> i; <span class="comment">// esi</span></span><br><span class="line">  <span class="keyword">int</span> v5; <span class="comment">// ecx</span></span><br><span class="line">  <span class="keyword">int</span> v6; <span class="comment">// edx</span></span><br><span class="line"></span><br><span class="line">  result = a3;</span><br><span class="line">  <span class="keyword">for</span> ( i = a2; i &lt;= a3; a2 = i )</span><br><span class="line">  &#123;</span><br><span class="line">    v5 = <span class="number">4</span> * i;</span><br><span class="line">    v6 = *(_DWORD *)(<span class="number">4</span> * i + a1);</span><br><span class="line">    <span class="keyword">if</span> ( a2 &lt; result &amp;&amp; i &lt; result )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">do</span></span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">if</span> ( v6 &gt; *(_DWORD *)(a1 + <span class="number">4</span> * result) )</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="keyword">if</span> ( i &gt;= result )</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">          ++i;</span><br><span class="line">          *(_DWORD *)(v5 + a1) = *(_DWORD *)(a1 + <span class="number">4</span> * result);</span><br><span class="line">          <span class="keyword">if</span> ( i &gt;= result )</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">          <span class="keyword">while</span> ( *(_DWORD *)(a1 + <span class="number">4</span> * i) &lt;= v6 )</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="keyword">if</span> ( ++i &gt;= result )</span><br><span class="line">              <span class="keyword">goto</span> LABEL_13;</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">if</span> ( i &gt;= result )</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">          v5 = <span class="number">4</span> * i;</span><br><span class="line">          *(_DWORD *)(a1 + <span class="number">4</span> * result) = *(_DWORD *)(<span class="number">4</span> * i + a1);</span><br><span class="line">        &#125;</span><br><span class="line">        --result;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">while</span> ( i &lt; result );</span><br><span class="line">    &#125;</span><br><span class="line">LABEL_13:</span><br><span class="line">    *(_DWORD *)(a1 + <span class="number">4</span> * result) = v6;</span><br><span class="line">    sub_4010F0(a1, a2, i - <span class="number">1</span>);</span><br><span class="line">    result = a3;</span><br><span class="line">    ++i;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 排序的结果是：[51, 67, 69, 72, 74, 78, 83, 90, 97, 103, 110]。<br>
+ 然后就是 base64 解码了，在分析代码的时候发现了类似 base64 的编码表。<br>
+<img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220722163158.png" alt=""></p>
+<p>&amp;e 至于为什么少了一个字符，开头有个 A 应该能解释，所以这不是 base64 换表，就是 base64 解码。</p>
+<p UJWP1jMp=""> sub_401000 就是 base64 编码函数。<br>
+<img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220722163444.png" alt=""><br>
+ v4 和 v5 经历了 base64 的编码。<br>
+ 经过一系列的运算就能够得到 String 中的字符串了。<br>
+flag：flag</p>
+<h3 id="简单注册器"><a class="markdownIt-Anchor" href="#简单注册器">#</a> 简单注册器</h3>
+<p> 这道题给的是一个 apk 文件，很明显是一个安卓逆向，但是用安卓逆向工具得到的 smile 代码我是真的看不懂，所以找了一个反编译工具把这个代码反编译成 java 代码。我找的这个工具是 JEB。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.flag;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.os.Bundle;</span><br><span class="line"><span class="keyword">import</span> android.support.v4.app.Fragment;</span><br><span class="line"><span class="keyword">import</span> android.support.v7.app.ActionBarActivity;</span><br><span class="line"><span class="keyword">import</span> android.view.LayoutInflater;</span><br><span class="line"><span class="keyword">import</span> android.view.Menu;</span><br><span class="line"><span class="keyword">import</span> android.view.MenuItem;</span><br><span class="line"><span class="keyword">import</span> android.view.View$OnClickListener;</span><br><span class="line"><span class="keyword">import</span> android.view.View;</span><br><span class="line"><span class="keyword">import</span> android.view.ViewGroup;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">ActionBarActivity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PlaceholderFragment</span> <span class="keyword">extends</span> <span class="title">Fragment</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">PlaceholderFragment</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> View <span class="title">onCreateView</span><span class="params">(LayoutInflater arg4, ViewGroup arg5, Bundle arg6)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> arg4.inflate(<span class="number">0x7F030018</span>, arg5, <span class="keyword">false</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MainActivity</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle arg7)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(arg7);</span><br><span class="line">        <span class="keyword">this</span>.setContentView(<span class="number">0x7F030017</span>);</span><br><span class="line">        <span class="keyword">if</span>(arg7 == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">this</span>.getSupportFragmentManager().beginTransaction().add(<span class="number">0x7F05003C</span>, <span class="keyword">new</span> PlaceholderFragment()).commit();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.findViewById(<span class="number">0x7F05003F</span>).setOnClickListener(<span class="keyword">new</span> View$OnClickListener(<span class="keyword">this</span>.findViewById(<span class="number">0x7F05003D</span>), <span class="keyword">this</span>.findViewById(<span class="number">0x7F05003E</span>)) &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View arg13)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">int</span> v11 = <span class="number">0x1F</span>;</span><br><span class="line">                <span class="keyword">int</span> v9 = <span class="number">2</span>;</span><br><span class="line">                <span class="keyword">int</span> v2 = <span class="number">1</span>;</span><br><span class="line">                String v6 = <span class="keyword">this</span>.val$editview.getText().toString();</span><br><span class="line">                <span class="keyword">if</span>(v6.length() != <span class="number">0x20</span> || v6.charAt(v11) != <span class="number">97</span> || v6.charAt(<span class="number">1</span>) != <span class="number">98</span> || v6.charAt(<span class="number">0</span>) + v6.charAt(v9) - <span class="number">0x30</span> != <span class="number">56</span>) &#123;</span><br><span class="line">                    v2 = <span class="number">0</span>;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span>(v2 == <span class="number">1</span>) &#123;</span><br><span class="line">                    <span class="keyword">char</span>[] v5 = <span class="string">&quot;dd2940c04462b4dd7c450528835cca15&quot;</span>.toCharArray();</span><br><span class="line">                    v5[v9] = ((<span class="keyword">char</span>)(v5[v9] + v5[<span class="number">3</span>] - <span class="number">50</span>));</span><br><span class="line">                    v5[<span class="number">4</span>] = ((<span class="keyword">char</span>)(v5[v9] + v5[<span class="number">5</span>] - <span class="number">0x30</span>));</span><br><span class="line">                    v5[<span class="number">30</span>] = ((<span class="keyword">char</span>)(v5[v11] + v5[<span class="number">9</span>] - <span class="number">0x30</span>));</span><br><span class="line">                    v5[<span class="number">14</span>] = ((<span class="keyword">char</span>)(v5[<span class="number">27</span>] + v5[<span class="number">28</span>] - <span class="number">97</span>));</span><br><span class="line">                    <span class="keyword">int</span> v4;</span><br><span class="line">                    <span class="keyword">for</span>(v4 = <span class="number">0</span>; v4 &lt; <span class="number">16</span>; ++v4) &#123;</span><br><span class="line">                        <span class="keyword">char</span> v0 = v5[<span class="number">0x1F</span> - v4];</span><br><span class="line">                        v5[<span class="number">0x1F</span> - v4] = v5[v4];</span><br><span class="line">                        v5[v4] = v0;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">this</span>.val$textview.setText(<span class="string">&quot;flag&#123;&quot;</span> + String.valueOf(v5) + <span class="string">&quot;&#125;&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">this</span>.val$textview.setText(<span class="string">&quot;输入注册码错误&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onCreateOptionsMenu</span><span class="params">(Menu arg3)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.getMenuInflater().inflate(<span class="number">0x7F0C0000</span>, arg3);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onOptionsItemSelected</span><span class="params">(MenuItem arg3)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">boolean</span> v1 = arg3.getItemId() == <span class="number">0x7F050040</span> ? <span class="keyword">true</span> : <span class="keyword">super</span>.onOptionsItemSelected(arg3);</span><br><span class="line">        <span class="keyword">return</span> v1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 这是经过反编译得到的 java 代码，特别简单的一段代码，所以直接看核心代码。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(v2 == <span class="number">1</span>) &#123;</span><br><span class="line">                    <span class="keyword">char</span>[] v5 = <span class="string">&quot;dd2940c04462b4dd7c450528835cca15&quot;</span>.toCharArray();</span><br><span class="line">                    v5[v9] = ((<span class="keyword">char</span>)(v5[v9] + v5[<span class="number">3</span>] - <span class="number">50</span>));</span><br><span class="line">                    v5[<span class="number">4</span>] = ((<span class="keyword">char</span>)(v5[v9] + v5[<span class="number">5</span>] - <span class="number">0x30</span>));</span><br><span class="line">                    v5[<span class="number">30</span>] = ((<span class="keyword">char</span>)(v5[v11] + v5[<span class="number">9</span>] - <span class="number">0x30</span>));</span><br><span class="line">                    v5[<span class="number">14</span>] = ((<span class="keyword">char</span>)(v5[<span class="number">27</span>] + v5[<span class="number">28</span>] - <span class="number">97</span>));</span><br><span class="line">                    <span class="keyword">int</span> v4;</span><br><span class="line">                    <span class="keyword">for</span>(v4 = <span class="number">0</span>; v4 &lt; <span class="number">16</span>; ++v4) &#123;</span><br><span class="line">                        <span class="keyword">char</span> v0 = v5[<span class="number">0x1F</span> - v4];</span><br><span class="line">                        v5[<span class="number">0x1F</span> - v4] = v5[v4];</span><br><span class="line">                        v5[v4] = v0;</span><br><span class="line">                    &#125;</span><br></pre></td></tr></table></figure>
+<p> 这段代码就是修改了 v5 中的值，最后得到的 v5 就是 flag 了。可以将这串代码拿出来运行一下就能得到 flag。我改了一下用的是 c 语言。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> v11 = <span class="number">0x1F</span>;</span><br><span class="line">    <span class="keyword">int</span> v9 = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">int</span> v2 = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">char</span> v5[<span class="number">100</span>] = <span class="string">&quot;dd2940c04462b4dd7c450528835cca15&quot;</span>;</span><br><span class="line">    v5[v9] = ((<span class="keyword">char</span>)(v5[v9] + v5[<span class="number">3</span>] - <span class="number">50</span>));</span><br><span class="line">    v5[<span class="number">4</span>] = ((<span class="keyword">char</span>)(v5[v9] + v5[<span class="number">5</span>] - <span class="number">0x30</span>));</span><br><span class="line">    v5[<span class="number">30</span>] = ((<span class="keyword">char</span>)(v5[v11] + v5[<span class="number">9</span>] - <span class="number">0x30</span>));</span><br><span class="line">    v5[<span class="number">14</span>] = ((<span class="keyword">char</span>)(v5[<span class="number">27</span>] + v5[<span class="number">28</span>] - <span class="number">97</span>));</span><br><span class="line">    <span class="keyword">int</span> v4;</span><br><span class="line">    <span class="keyword">for</span>(v4 = <span class="number">0</span>; v4 &lt; <span class="number">16</span>; ++v4)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">char</span> v0 = v5[<span class="number">0x1F</span> - v4];</span><br><span class="line">        v5[<span class="number">0x1F</span> - v4] = v5[v4];</span><br><span class="line">        v5[v4] = v0;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;flag&#123;&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>,v5);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;&#125;&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flag：flag&#123;59acc538825054c7de4b26440c0999dd&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="gwctf-2019pyre"><a class="markdownIt-Anchor" href="#gwctf-2019pyre">#</a> [GWCTF 2019]pyre</h3>
+<p> 第一次接触这种 python 的逆向题，题目给了一个 pyc 文件，咱也不知道是干什么的，于是上网查了一下。<br>
+ py. : 源码文件，由 python 程序解释<br>
+ pyc. : 源码经过编译后生成的二进制字节码<br>
+ 所以我们要做的就是反编译 pyc，做法是先下载一个 uncompyle 库：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//下载</span><br><span class="line">pip install uncompyle</span><br><span class="line">//命令行</span><br><span class="line">uncompyle6 test.pyc &gt; test1.py </span><br></pre></td></tr></table></figure>
+<p> 把题目给的 pyc 反编译得到一个.py 文件。代码如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># uncompyle6 version 3.8.0</span></span><br><span class="line"><span class="comment"># Python bytecode 2.7 (62211)</span></span><br><span class="line"><span class="comment"># Decompiled from: Python 3.10.1 (tags/v3.10.1:2cd268a, Dec  6 2021, 19:10:37) [MSC v.1929 64 bit (AMD64)]</span></span><br><span class="line"><span class="comment"># Embedded file name: encode.py</span></span><br><span class="line"><span class="comment"># Compiled at: 2019-08-19 21:01:57</span></span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;Welcome to Re World!&#x27;</span></span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;Your input1 is your flag~&#x27;</span></span><br><span class="line">l = <span class="built_in">len</span>(input1)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(l):</span><br><span class="line">    num = ((input1[i] + i) % <span class="number">128</span> + <span class="number">128</span>) % <span class="number">128</span></span><br><span class="line">    code += num</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(l - <span class="number">1</span>):</span><br><span class="line">    code[i] = code[i] ^ code[(i + <span class="number">1</span>)]</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> code</span><br><span class="line">code = [<span class="string">&#x27;\x1f&#x27;</span>, <span class="string">&#x27;\x12&#x27;</span>, <span class="string">&#x27;\x1d&#x27;</span>, <span class="string">&#x27;(&#x27;</span>, <span class="string">&#x27;0&#x27;</span>, <span class="string">&#x27;4&#x27;</span>, <span class="string">&#x27;\x01&#x27;</span>, <span class="string">&#x27;\x06&#x27;</span>, <span class="string">&#x27;\x14&#x27;</span>, <span class="string">&#x27;4&#x27;</span>, <span class="string">&#x27;,&#x27;</span>, <span class="string">&#x27;\x1b&#x27;</span>, <span class="string">&#x27;U&#x27;</span>, <span class="string">&#x27;?&#x27;</span>, <span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;6&#x27;</span>, <span class="string">&#x27;*&#x27;</span>, <span class="string">&#x27;:&#x27;</span>, <span class="string">&#x27;\x01&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;;&#x27;</span>, <span class="string">&#x27;%&#x27;</span>, <span class="string">&#x27;\x13&#x27;</span>]</span><br><span class="line"><span class="comment"># okay decompiling attachment.pyc</span></span><br></pre></td></tr></table></figure>
+<p> 写一个脚本逆一下就能得到 flag。 取余逆运算的原理，如果：A=(B-C)% D，那么 B=(A+C)% D。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">code = [<span class="string">&#x27;\x1f&#x27;</span>, <span class="string">&#x27;\x12&#x27;</span>, <span class="string">&#x27;\x1d&#x27;</span>, <span class="string">&#x27;(&#x27;</span>, <span class="string">&#x27;0&#x27;</span>, <span class="string">&#x27;4&#x27;</span>, <span class="string">&#x27;\x01&#x27;</span>, <span class="string">&#x27;\x06&#x27;</span>, <span class="string">&#x27;\x14&#x27;</span>, <span class="string">&#x27;4&#x27;</span>, <span class="string">&#x27;,&#x27;</span>, <span class="string">&#x27;\x1b&#x27;</span>, <span class="string">&#x27;U&#x27;</span>, <span class="string">&#x27;?&#x27;</span>, <span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;6&#x27;</span>, <span class="string">&#x27;*&#x27;</span>, <span class="string">&#x27;:&#x27;</span>, <span class="string">&#x27;\x01&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;;&#x27;</span>, <span class="string">&#x27;%&#x27;</span>, <span class="string">&#x27;\x13&#x27;</span>]</span><br><span class="line">L = <span class="built_in">len</span>(code)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(L-<span class="number">1</span>):</span><br><span class="line">    code[L-i-<span class="number">2</span>] = <span class="built_in">chr</span>(<span class="built_in">ord</span>(code[L-i-<span class="number">2</span>])^<span class="built_in">ord</span>(code[L-i-<span class="number">1</span>]))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(L):</span><br><span class="line">    code[i] = <span class="built_in">chr</span>((<span class="built_in">ord</span>(code[i]) - i)%<span class="number">128</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(L):</span><br><span class="line">    <span class="built_in">print</span>(code[i],end = <span class="string">&quot;&quot;</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flag：flag&#123;Just_Re_1s_Ha66y!&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="hdctf2019maze"><a class="markdownIt-Anchor" href="#hdctf2019maze">#</a> [HDCTF2019]Maze</h2>
+<p> 之前遇到过迷宫题，但是没有好好做记录，这次遇到的迷宫题，不仅有花指令，还有迷宫，正好两个都做一下记录。<br>
+<img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220724143507.png" alt=""><br>
+ 程序没有 main 函数，看到了没这个红色的标积，这就是花指令，通常的做法有两种，一种是动调，程序可以自行恢复正常状态。一种是固定的操作。<br>
+ 主要说说怎么用 IDA 清除这些花指令。<br>
+<img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220724150409.png" alt=""><br>
+ 将这个一块选中按 D 键。<br>
+<img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220724150456.png" alt=""><br>
+ 代码变成这样就可以了。<br>
+<img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220724150626.png" alt=""><br>
+ 将 0E8h 选中，然后按照图中的操作进行。</p>
+<p><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220724150744.png" alt=""></p>
+<p> 然后把开头的 E8 改为 90，再保存，再按一下 C 键。<br>
+<img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220724150948.png" alt=""><br>
+ 代码变成这样就可以了。<br>
+<img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220724151054.png" alt=""><br>
+ 这时候反汇编依然是看不出东西，先把代码往上翻找到这个__main，选中按下 P 键就可以看到主函数了。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> __cdecl <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> **argv, <span class="keyword">const</span> <span class="keyword">char</span> **envp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> i; <span class="comment">// [esp+10h] [ebp-14h]</span></span><br><span class="line">  <span class="keyword">char</span> v5[<span class="number">16</span>]; <span class="comment">// [esp+14h] [ebp-10h] BYREF</span></span><br><span class="line"></span><br><span class="line">  sub_401140(aGoThroughTheMa);</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">&quot;%14s&quot;</span>, v5);</span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt;= <span class="number">13</span>; ++i )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">switch</span> ( v5[i] )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="string">&#x27;a&#x27;</span>:</span><br><span class="line">        --*(_DWORD *)asc_408078;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="string">&#x27;d&#x27;</span>:</span><br><span class="line">        ++*(_DWORD *)asc_408078;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="string">&#x27;s&#x27;</span>:</span><br><span class="line">        --dword_40807C;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="string">&#x27;w&#x27;</span>:</span><br><span class="line">        ++dword_40807C;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">default</span>:</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> ( *(_DWORD *)asc_408078 == <span class="number">5</span> &amp;&amp; dword_40807C == <span class="number">-4</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    sub_401140(aCongratulation);</span><br><span class="line">    sub_401140(aHereIsTheFlagF);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    sub_401140(aTryAgain);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 这就是主函数，迷宫的步数就是 flag。<br>
+<img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220724151340.png" alt=""><br>
+ 在这里找到迷宫，将这串东西复制到文本当中。<br>
+<img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220724151435.png" alt=""><br>
+ 分段的标准是对齐就行，所以按照 5 或 7 或 10 分就可以了。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flag:flag&#123;ssaaasaassdddw&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="pe"><a class="markdownIt-Anchor" href="#pe">#</a> PE</h3>
+<p> 这道题我不知道来源。自取：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">链接：https://pan.baidu.com/s/1qgiqIx6C31w40BlfBelmVA </span><br><span class="line">提取码：wish</span><br></pre></td></tr></table></figure>
+<p> 给的程序是无法运行的，并且直接用 IDA 打开也看不到任何东西。做法是用 010 打开，然后修改。<br>
+<img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220724164509.png" alt=""><br>
+ 将 E0 改成 F0，再用 IDA 打开就能看到主函数了。我在网上找了一篇文章应该能大概了解下 PE。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://cloud.tencent.com/developer/article/1910254</span><br></pre></td></tr></table></figure>
+<p><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220724164853.png" alt=""><br>
+ 主函数大概就是这样，然后 sub_411339 是一个 base64 换表。<br>
+<img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220724165059.png" alt=""><br>
+ 在 sub4114B0 里面能发现一段字符串。<br>
+<img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220724165236.png" alt=""><br>
+ 程序的大致思路就是，将这段字符串通过换表解码，得到的就是 flag 了。</p>
+<p><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/20220724165308.png" alt=""><br>
+ 这个网站可以轻松实现换表解码，倾力推荐。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://icyberchef.com/</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flag：flag&#123;you_really_know_pe&#125;</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">某人不会敲代码</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/07/15/buuCTF-reverse%E9%A2%98%E8%A7%A3%EF%BC%88%E4%B8%80%EF%BC%89/">http://example.com/2022/07/15/buuCTF-reverse题解（一）/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">某人不会敲代码</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8D%9A%E5%AE%A2/">博客</a><a class="post-meta__tags" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><a class="post-meta__tags" href="/tags/writeup/">writeup</a></div><div class="post_share"><div class="social-share" data-image="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/632918.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/gh/overtrue/share.js@master/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2022/07/10/buuCTF-Misc%E9%A2%98%E8%A7%A3%EF%BC%88%E4%B8%80%EF%BC%89/"><img class="prev-cover" src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/994514.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">buuCTF题解（三）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/07/01/buuCTF%E9%A2%98%E8%A7%A3%EF%BC%88%E4%B8%80%EF%BC%89/" title="buuCTF题解（一）"><img class="cover" src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/963702.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-01</div><div class="title">buuCTF题解（一）</div></div></a></div><div><a href="/2022/07/10/buuCTF-Misc%E9%A2%98%E8%A7%A3%EF%BC%88%E4%B8%80%EF%BC%89/" title="buuCTF题解（三）"><img class="cover" src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/994514.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-10</div><div class="title">buuCTF题解（三）</div></div></a></div><div><a href="/2022/04/27/C%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0base64%E7%BC%96%E7%A0%81/" title="C语言实现base64编码"><img class="cover" src="https://cdn.jsdelivr.net/gh/xmzbk/blog-img@main/1020806.16uujyri4hb4.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-27</div><div class="title">C语言实现base64编码</div></div></a></div><div><a href="/2022/07/03/buuCTF%E9%A2%98%E8%A7%A3%EF%BC%88%E4%BA%8C%EF%BC%89/" title="buuCTF题解（二）"><img class="cover" src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/1240551.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-03</div><div class="title">buuCTF题解（二）</div></div></a></div><div><a href="/2022/04/05/csapp%20datelab%E8%AF%A6%E8%A7%A3/" title="csapp datelab详解"><img class="cover" src="https://cdn.jsdelivr.net/gh/xmzbk/blog-img@main/你豆子.1kteq2ci816o.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-05</div><div class="title">csapp datelab详解</div></div></a></div><div><a href="/2022/06/25/pwncollege%E7%9A%84%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF/" title="program Interaction的C前解题记录"><img class="cover" src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/1231206.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-25</div><div class="title">program Interaction的C前解题记录</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Valine</span><span class="switch-btn"></span><span class="second-comment">Disqus</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div><div><div id="disqus_thread"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/touxiang.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">某人不会敲代码</div><div class="author-info__description">这里只有一个孤独的程序员</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">12</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xmzbk"><i class="fab fa-github"></i><span>こっちに来い</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">嗨嗨嗨，我是真的会谢好吧！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#java%E9%80%86%E5%90%91%E8%A7%A3%E5%AF%86"><span class="toc-number">1.</span> <span class="toc-text"> Java 逆向解密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%AE%E5%BC%80%E6%9C%89%E5%A5%96"><span class="toc-number">2.</span> <span class="toc-text"> 刮开有奖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E6%B3%A8%E5%86%8C%E5%99%A8"><span class="toc-number">3.</span> <span class="toc-text"> 简单注册器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gwctf-2019pyre"><span class="toc-number">4.</span> <span class="toc-text"> [GWCTF 2019]pyre</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hdctf2019maze"><span class="toc-number"></span> <span class="toc-text"> [HDCTF2019]Maze</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pe"><span class="toc-number">1.</span> <span class="toc-text"> PE</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/07/15/buuCTF-reverse%E9%A2%98%E8%A7%A3%EF%BC%88%E4%B8%80%EF%BC%89/" title="buuCTF-Reverse题解（一）"><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/632918.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="buuCTF-Reverse题解（一）"/></a><div class="content"><a class="title" href="/2022/07/15/buuCTF-reverse%E9%A2%98%E8%A7%A3%EF%BC%88%E4%B8%80%EF%BC%89/" title="buuCTF-Reverse题解（一）">buuCTF-Reverse题解（一）</a><time datetime="2022-07-15T07:57:22.000Z" title="发表于 2022-07-15 15:57:22">2022-07-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/10/buuCTF-Misc%E9%A2%98%E8%A7%A3%EF%BC%88%E4%B8%80%EF%BC%89/" title="buuCTF题解（三）"><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/994514.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="buuCTF题解（三）"/></a><div class="content"><a class="title" href="/2022/07/10/buuCTF-Misc%E9%A2%98%E8%A7%A3%EF%BC%88%E4%B8%80%EF%BC%89/" title="buuCTF题解（三）">buuCTF题解（三）</a><time datetime="2022-07-10T08:47:47.000Z" title="发表于 2022-07-10 16:47:47">2022-07-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/10/python%EF%BC%88%E4%BA%8C%EF%BC%89/" title="python（二）"><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/1229069.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="python（二）"/></a><div class="content"><a class="title" href="/2022/07/10/python%EF%BC%88%E4%BA%8C%EF%BC%89/" title="python（二）">python（二）</a><time datetime="2022-07-10T05:29:23.000Z" title="发表于 2022-07-10 13:29:23">2022-07-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/09/%E7%AE%80%E5%8D%95%E7%A0%B4%E8%A7%A3%E5%92%8C%E4%BF%AE%E6%94%B9%E7%AA%97%E5%8F%A3/" title="简单程序破解和修改窗口"><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/681016.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="简单程序破解和修改窗口"/></a><div class="content"><a class="title" href="/2022/07/09/%E7%AE%80%E5%8D%95%E7%A0%B4%E8%A7%A3%E5%92%8C%E4%BF%AE%E6%94%B9%E7%AA%97%E5%8F%A3/" title="简单程序破解和修改窗口">简单程序破解和修改窗口</a><time datetime="2022-07-09T14:42:23.000Z" title="发表于 2022-07-09 22:42:23">2022-07-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/03/buuCTF%E9%A2%98%E8%A7%A3%EF%BC%88%E4%BA%8C%EF%BC%89/" title="buuCTF题解（二）"><img src="https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/1240551.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="buuCTF题解（二）"/></a><div class="content"><a class="title" href="/2022/07/03/buuCTF%E9%A2%98%E8%A7%A3%EF%BC%88%E4%BA%8C%EF%BC%89/" title="buuCTF题解（二）">buuCTF题解（二）</a><time datetime="2022-07-03T05:29:02.000Z" title="发表于 2022-07-03 13:29:02">2022-07-03</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://xmzbk-1310919595.cos.ap-nanjing.myqcloud.com/699287.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 某人不会敲代码</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: '',
+      appKey: '',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script>function loadDisqus () {
+  var disqus_config = function () {
+    this.page.url = 'http://example.com/2022/07/15/buuCTF-reverse%E9%A2%98%E8%A7%A3%EF%BC%88%E4%B8%80%EF%BC%89/'
+    this.page.identifier = '2022/07/15/buuCTF-reverse题解（一）/'
+    this.page.title = 'buuCTF-Reverse题解（一）'
+  };
+
+  window.disqusReset = () => {
+    DISQUS.reset({
+      reload: true,
+      config: disqus_config
+    })
+  }
+
+  if (window.DISQUS) disqusReset()
+  else {
+    (function() { 
+      var d = document, s = d.createElement('script');
+      s.src = 'https://.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  }
+}
+
+if ('Valine' === 'Disqus' || !true) {
+  if (true) btf.loadComment(document.getElementById('disqus_thread'), loadDisqus)
+  else loadDisqus()
+} else {
+  function loadOtherComment () {
+    loadDisqus()
+  }
+}
+</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"]):not([href="/music/"]):not([href="/no-pjax/"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
